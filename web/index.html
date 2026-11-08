@@ -128,6 +128,7 @@ input::placeholder{color:var(--ucuncul)}
 body.sinema .kenar,body.sinema .liste,body.sinema .ust-cubuk{display:none}
 body.sinema .sahne{padding:0}
 body.sinema .ekran{border-radius:0;box-shadow:none}
+body.sinema .kontrol{left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom))}
 
 /* ---------- kenar cubugu ---------- */
 .marka{display:flex;align-items:center;gap:10px;padding:2px 8px 16px}
@@ -138,7 +139,9 @@ body.sinema .ekran{border-radius:0;box-shadow:none}
   background-size:260% 100%,100% 100%;background-position:100% 0,0 0;-webkit-background-clip:text;background-clip:text;color:transparent;
   animation:tvParla 7s cubic-bezier(.45,0,.2,1) 2.2s infinite}
 .m-parilti{animation:mParla 7s cubic-bezier(.45,0,.2,1) 2s infinite}
-/* --r1..--r3: tum gradyanlarin ortak, canli (neon) renkleri; sayfa basindaki tek bir dongu hepsini ayni anda yavasca degistirir */
+/* --r1..--r3: tum gradyanlarin ortak, canli (neon) renkleri; sayfa basindaki tek bir dongu hepsini ayni anda yavasca degistirir.
+   Dongu degiskenleri yalnizca asagidaki bolumlere yazar; --marka da orada yeniden kurulur ki guncel renkleri kullansin */
+#intro,.marka,.ust-marka,#listeYukleme,#yukleme,#kanalAlan,#simdi,#radyo{--marka:linear-gradient(135deg,var(--r1),var(--r2) 55%,var(--r3))}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.35s;animation-timing-function:cubic-bezier(.4,0,.2,1)}
 @keyframes tvParla{0%{background-position:100% 0,0 0}20%,100%{background-position:0 0,0 0}}
 @keyframes mParla{0%{transform:translateX(0)}20%,100%{transform:translateX(150px)}}
@@ -152,7 +155,8 @@ body.sinema .ekran{border-radius:0;box-shadow:none}
 .tema-seg svg{flex:none}.tema-seg span:not(.seg-thumb){overflow:hidden;text-overflow:ellipsis}
 .vurgu{position:absolute;left:4px;right:4px;top:0;height:34px;border-radius:9px;background:var(--secim);pointer-events:none;opacity:0;
   transition:transform .5s var(--yay),height .5s var(--yay),opacity .2s}
-.oge{position:relative;display:flex;align-items:center;gap:10px;width:100%;min-height:34px;padding:7px 10px;border-radius:9px;text-align:left;transition:background-color .2s}
+.oge{position:relative;display:flex;align-items:center;gap:10px;width:100%;min-height:34px;padding:7px 10px;border-radius:9px;text-align:left;transition:background-color .2s,transform .4s var(--yay)}
+.oge:active{transform:scale(.97)}
 .oge:not(.secili):hover{background:var(--dolgu)}
 .oge svg{flex:none;color:var(--mavi)}
 .oge .ad{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -174,7 +178,8 @@ body.sinema .ekran{border-radius:0;box-shadow:none}
 .ara input{flex:1;min-width:0;height:100%;border:0;background:none;user-select:text}
 .cipler{position:relative;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:1px 16px}
 .cip-vurgu{position:absolute;top:1px;left:0;height:28px;border-radius:14px;background:var(--mavi);transition:transform .5s var(--yay),width .5s var(--yay)}
-.cip{position:relative;flex:none;height:28px;padding:0 13px;border-radius:14px;background:var(--dolgu);font-size:12.5px;transition:color .25s,background-color .25s}
+.cip{position:relative;flex:none;height:28px;padding:0 13px;border-radius:14px;background:var(--dolgu);font-size:12.5px;transition:color .25s,background-color .25s,transform .4s var(--yay)}
+.cip:active{transform:scale(.93)}
 .cip.secili{background:transparent;color:#fff;font-weight:600}
 .cip:not(.secili):hover{background:var(--dolgu2)}
 .liste-yukleme{margin:2px 12px 8px;padding:12px 13px 13px;border-radius:13px;background:var(--dolgu);display:flex;flex-direction:column;gap:8px}
@@ -194,6 +199,8 @@ body.sinema .ekran{border-radius:0;box-shadow:none}
 .kanal-alan{position:relative}
 .kanal,.iskelet{position:absolute;left:0;right:0;top:0;height:50px;display:flex;align-items:center;gap:11px;padding:0 8px;border-radius:11px}
 .kanal{transition:background-color .2s}
+.kanal .logo,.kanal .kmetin{transition:transform .4s var(--yay)}
+.kanal:active .logo{transform:scale(.92)}.kanal:active .kmetin{transform:translateX(2px)}
 .kanal:hover{background:var(--dolgu)}
 .kanal.aktif{background:var(--mavi);color:#fff}
 .kanal.aktif .kad{font-weight:600}
@@ -280,8 +287,11 @@ body.rtx .cam{backdrop-filter:none;background:rgba(28,28,30,.94)}
 .k-ses input{width:0;opacity:0;transition:width .45s var(--yay),opacity .25s,margin .45s var(--yay)}
 .k-ses:hover input,.k-ses:focus-within input{width:96px;opacity:1;margin:0 10px 0 2px}
 .canli{display:inline-flex;align-items:center;gap:6px;height:28px;margin:0 4px;padding:0 11px;border-radius:14px;color:#fff;
-  font-size:11px;font-weight:700;letter-spacing:.05em;background:rgba(255,255,255,.12);transition:background-color .2s}
-.canli i{width:7px;height:7px;flex:none;border-radius:50%;background:#ff4245}
+  font-size:11px;font-weight:700;letter-spacing:.05em;background:rgba(255,255,255,.12);transition:background-color .25s,transform .4s var(--yay)}
+.canli:active{transform:scale(.94)}
+.canli i{width:7px;height:7px;flex:none;border-radius:50%;background:#ff4245;transition:background-color .3s;animation:nabiz 2.4s ease-in-out infinite}
+@keyframes nabiz{0%,100%{opacity:1}50%{opacity:.45}}
+.canli.geride i{animation:none}
 .canli.geride i{background:#8e8e93}
 .canli.geride:hover{background:rgba(255,255,255,.22)}
 .k-sure{flex:1;min-width:0;display:flex;align-items:center;gap:10px;margin:0 6px}
@@ -411,33 +421,42 @@ details .alan{margin-top:10px}
 .yon-alt{display:none}
 @media (max-width:760px) and (orientation:portrait){.yon-sol{display:none}.yon-alt{display:inline}}
 @media (max-width:760px) and (orientation:portrait){body:not(.sinema) #ekranBos b{font-size:17px;margin-top:8px}body:not(.sinema) #ekranBos svg{width:40px;height:44px}}
-/* yatay telefon: kisa ekranda liste sutunu bastan sona kaydirilabilir */
+/* yatay telefon: kanal listesi videonun ustune kayan panel; video yeniden boyutlanmaz, animasyon yalnizca transform (takilmaz) */
 @media (max-height:520px){
-  .liste{width:min(316px,42vw)}.liste-ic{width:auto;overflow-y:auto;contain:layout paint}
+  body:not(.sinema) .liste{position:fixed;left:0;top:0;bottom:0;z-index:30;width:min(340px,46vw);border-right:0;border-radius:0 18px 18px 0;
+    box-shadow:var(--golge);transform:translate3d(0,0,0);transition:transform .42s cubic-bezier(.32,.72,0,1),visibility 0s;will-change:transform;contain:layout paint}
+  body:not(.sinema) .uygulama.liste-yok .liste{width:min(340px,46vw);border-color:transparent;transform:translate3d(-106%,0,0);visibility:hidden;
+    transition:transform .34s cubic-bezier(.4,0,.6,1),visibility 0s linear .34s}
+  .uygulama.liste-yok .liste-ic{opacity:1;transform:none}
+  .liste-ic{width:auto;overflow-y:auto;contain:layout paint;padding-left:env(safe-area-inset-left)}
   .kanal-kaydir{flex:1 0 260px}
   .liste-ust h1{font-size:22px}}
 
-/* ---------- acilis animasyonu (3 sn) ---------- */
-#intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;background:#fff;
-  animation:introCik .5s cubic-bezier(.4,0,.2,1) 2.5s forwards}
+/* ---------- acilis animasyonu (~3,5 sn) ----------
+   Logo sivi gibi dolar; alt uclarindan boya damlar, damlalar renksiz "TV" harflerine duser ve rengi yayar,
+   "Gamma" yazisi katilir, en sonda logo ve yazi ust cubuktaki markanin yerine suzulur. Dokununca atlanir. */
+#intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;background:#fff}
 @media (prefers-color-scheme:dark){:root:not([data-tema=acik]) #intro{background:#000}}
 :root[data-tema=koyu] #intro{background:#000}
-#intro.atla{animation:introCik .26s ease-in forwards}
-.intro-ic{display:flex;flex-direction:column;align-items:center;gap:18px;animation:icCik .5s cubic-bezier(.4,0,.2,1) 2.5s forwards}
-.intro-logo{display:block;overflow:visible;animation:logoGir 1.1s var(--yay) .1s both}
-.i-damla{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);animation:damla .6s cubic-bezier(.3,1.35,.5,1) forwards;animation-delay:calc(.75s + var(--d)*.09s)}
-.i-parilti{opacity:0;animation:parla .8s cubic-bezier(.45,0,.2,1) 1.5s}
-.intro-yazi{font:650 34px/1 var(--font-baslik);letter-spacing:-.025em;color:var(--yazi);white-space:nowrap}
-.intro-yazi span{display:inline-block;opacity:0;transform:translateY(18px);animation:harf .75s var(--yay) forwards;animation-delay:calc(.95s + var(--i)*.05s)}
-.intro-yazi .tv-yazi{animation-name:harf,tvParla;animation-duration:.75s,4.5s;animation-timing-function:var(--yay),cubic-bezier(.45,0,.2,1);animation-delay:1.2s,1.65s;animation-iteration-count:1,1;animation-fill-mode:forwards,none}
-@keyframes logoGir{from{opacity:0;transform:scale(.7);filter:blur(10px)}60%{filter:blur(0)}}
-@keyframes damla{to{transform:scaleY(1)}}
-@keyframes parla{from{opacity:1;transform:none}to{opacity:1;transform:translateX(150px)}}
-@keyframes harf{to{opacity:1;transform:none}}
-@keyframes introCik{to{opacity:0;visibility:hidden}}
-@keyframes icCik{to{transform:scale(1.04)}}
+.intro-zemin{position:absolute;inset:0;pointer-events:none}
+.intro-sahne{position:relative;display:block;width:min(84vw,400px,calc(100vh * 1.2));height:auto;overflow:visible}
+.intro-sahne .i-logo,.intro-sahne .i-govde,.intro-sahne .i-boncuk,.intro-sahne .i-leke,.intro-sahne .i-sicra,.intro-sahne .i-tv-ic,
+.intro-sahne .i-gamma,.intro-sahne .i-parilti{transform-box:fill-box}
+.i-logo{transform-origin:50% 50%;opacity:0}
+.i-govde{transform-origin:50% 0;transform:scaleY(0)}
+.i-boncuk,.i-sicra{transform-origin:50% 50%;opacity:0}
+.i-leke{transform-origin:50% 50%;transform:scale(0)}
+.i-tv{transform-origin:0 0}
+.i-tv-ic{transform-origin:50% 100%;opacity:0}
+.i-tv-gri{fill:rgba(128,128,128,.28);fill:color-mix(in srgb,var(--yazi) 15%,transparent)}
+.i-gamma{fill:var(--yazi);opacity:0}
+.i-gamma-perde{transform-box:fill-box;transform-origin:0 50%;transform:scaleX(0)}
+.i-tv-yazi{font-family:"GammaTV Marka",var(--font-baslik);font-weight:800}
+.i-gamma{font-family:var(--font-baslik);font-weight:650}
+/* acilis surerken gercek marka gizli: suzulen kopya tam yerine oturunca yer degistirirler */
+html.intro .marka svg,html.intro .marka b,html.intro .ust-marka{opacity:0}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}
-  .tv-yazi,.m-parilti{animation:none!important}.intro-yazi .tv-yazi{opacity:1;transform:none}}
+  .tv-yazi,.m-parilti{animation:none!important}}
 </style>
 <script>
 /* Tum gradyanlar icin tek, senkron renk dongusu: neon renkler arasinda cok yavas ileri-geri gecis (yesil yok) */
@@ -445,28 +464,49 @@ details .alan{margin-top:10px}
   if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
   const yans=x=>{x=((x%(2*N))+2*N)%(2*N);return x>N?2*N-x:x};
   const renk=x=>{x=yans(x);const i=Math.min(N-1,Math.floor(x)),f=x-i,u=f*f*(3-2*f),a=P[i],b=P[i+1];return"rgb("+a.map((v,k)=>Math.round(v+(b[k]-v)*u)).join(",")+")"};
-  let son=-1e9;function ciz(t){if(t-son>=80&&!(t<(window.__renkBekle||0))&&!document.hidden&&!(document.body&&document.body.classList.contains("sinema"))){son=t;
-      const s=N*(1-Math.cos(2*Math.PI*(t%SURE)/SURE))/2;D.style.setProperty("--r1",renk(s));D.style.setProperty("--r2",renk(s+1.1));D.style.setProperty("--r3",renk(s+2.2))}
+  /* degiskenler yalnizca gradyan kullanan bolumlere yazilir: :root'a yazmak her adimda tum sayfanin stilini yeniden hesaplatir */
+  const HEDEF="#intro,.marka,.ust-marka,#listeYukleme,#yukleme,#kanalAlan,#simdi,#radyo";
+  /* hedef listesi saniyede bir tazelenir; renk degismediyse hic yazilmaz (gereksiz stil hesabi yok) */
+  let son=-1e9,liste=[],listeZaman=-1e9,onceki="";function ciz(t){if(t-son>=80&&!(t<(window.__renkBekle||0))&&!document.hidden&&!(document.body&&document.body.classList.contains("sinema"))){son=t;
+      const s=N*(1-Math.cos(2*Math.PI*(t%SURE)/SURE))/2,a=renk(s),b=renk(s+1.1),c=renk(s+2.2),imza=a+b+c;
+      if(t-listeZaman>1000){liste=[...document.querySelectorAll(HEDEF)];listeZaman=t;onceki=""}
+      if(imza!==onceki){onceki=imza;for(const el of liste){const st=el.style;st.setProperty("--r1",a);st.setProperty("--r2",b);st.setProperty("--r3",c)}}}
     requestAnimationFrame(ciz)}
   requestAnimationFrame(ciz)})();
+document.documentElement.classList.add("intro");
 try{const t=localStorage.getItem("gammatv-tema");if(t==="acik"||t==="koyu")document.documentElement.dataset.tema=t}catch(e){}</script>
 </head><body>
 <div id="intro" aria-hidden="true">
-  <div class="intro-ic">
-    <div class="intro-renk"><svg class="intro-logo" viewBox="0 0 100 100" width="148" height="148">
-      <defs>
-        <linearGradient id="inG" x1="16" y1="8" x2="84" y2="98" gradientUnits="userSpaceOnUse"><stop offset="0" style="stop-color:var(--r1)"/><stop offset=".5" style="stop-color:var(--r2)"/><stop offset="1" style="stop-color:var(--r3)"/></linearGradient>
-        <linearGradient id="inP" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-        <mask id="inM" maskUnits="userSpaceOnUse" x="-20" y="-20" width="140" height="140"><path d="M18 12 39 37.5V18L44.5 37.5 50 18 55.5 37.5 61 18V37.5L82 12 71 79 65.75 50.5 50 89 34.25 50.5 29 79Z" fill="none" stroke="#fff" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round"/></mask>
-      </defs>
-      <g transform="translate(0 -3)">
-        <path class="i-yol" d="M18 12 39 37.5V18L44.5 37.5 50 18 55.5 37.5 61 18V37.5L82 12 71 79 65.75 50.5 50 89 34.25 50.5 29 79Z" fill="none" stroke="url(#inG)" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round"/>
-        <g fill="url(#inG)"><g class="i-damla" style="--d:0"><rect x="28.15" y="80" width="1.7" height="7.2" rx=".85"/><circle cx="29" cy="88.6" r="1.35"/></g><g class="i-damla" style="--d:1"><rect x="49.15" y="90" width="1.7" height="4.6" rx=".85"/><circle cx="50" cy="95.9" r="1.3"/></g><g class="i-damla" style="--d:2"><rect x="70.2" y="80" width="1.6" height="4" rx=".8"/><circle cx="71" cy="85.4" r="1.15"/><circle cx="73.1" cy="83.2" r=".7"/></g></g>
-        <g mask="url(#inM)"><rect class="i-parilti" x="-34" y="-30" width="28" height="160" fill="url(#inP)"/></g>
-      </g>
-    </svg></div>
-    <div class="intro-yazi"><span style="--i:0">G</span><span style="--i:1">a</span><span style="--i:2">m</span><span style="--i:3">m</span><span style="--i:4">a</span><span class="tv-yazi">TV</span></div>
-  </div>
+  <div class="intro-zemin"></div>
+  <svg class="intro-sahne" viewBox="0 0 300 230" width="300" height="230">
+    <defs>
+      <linearGradient id="inG" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="0"><stop offset="0" style="stop-color:var(--r1)"/><stop offset=".5" style="stop-color:var(--r2)"/><stop offset="1" style="stop-color:var(--r3)"/></linearGradient>
+      <linearGradient id="inT" gradientUnits="userSpaceOnUse" x1="100" y1="0" x2="200" y2="0"><stop offset="0" style="stop-color:var(--r1)"/><stop offset=".5" style="stop-color:var(--r2)"/><stop offset="1" style="stop-color:var(--r3)"/></linearGradient>
+      <linearGradient id="inP" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <radialGradient id="inLeke"><stop offset=".72" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      <mask id="inDolum" maskUnits="userSpaceOnUse" x="70" y="-10" width="160" height="140"><path class="i-dalga" fill="#fff" d="M70 -240H230V0Q226 4.5 222 0T214 0T206 0T198 0T190 0T182 0T174 0T166 0T158 0T150 0T142 0T134 0T126 0T118 0T110 0T102 0T94 0T86 0T78 0T70 0Z"/></mask>
+      <mask id="inLogoM" maskUnits="userSpaceOnUse" x="70" y="-10" width="160" height="140"><path d="M18 12 39 37.5V18L44.5 37.5 50 18 55.5 37.5 61 18V37.5L82 12 71 79 65.75 50.5 50 89 34.25 50.5 29 79Z" transform="translate(100 14)" fill="none" stroke="#fff" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round"/></mask>
+      <mask id="inBoya" maskUnits="userSpaceOnUse" x="40" y="70" width="220" height="170"><circle class="i-leke" cx="129" cy="162.2" r="82" fill="url(#inLeke)"/><circle class="i-leke" cx="150" cy="162.2" r="82" fill="url(#inLeke)"/><circle class="i-leke" cx="171" cy="162.2" r="82" fill="url(#inLeke)"/></mask>
+      <mask id="inTvM" maskUnits="userSpaceOnUse" x="90" y="140" width="120" height="80"><text class="i-tv-yazi " x="109.4" y="205" font-size="70.6" fill="#fff">TV</text></mask>
+      <mask id="inGammaM" maskUnits="userSpaceOnUse" x="-10" y="120" width="320" height="100"><rect class="i-gamma-perde" x="0" y="130" width="300" height="80" fill="#fff"/></mask>
+      <filter id="inGoo" filterUnits="userSpaceOnUse" x="105" y="78" width="90" height="100" color-interpolation-filters="sRGB">
+        <feGaussianBlur stdDeviation="1.5" result="b"/><feColorMatrix in="b" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7"/></filter>
+    </defs>
+    <g class="i-ust">
+      <g class="i-logo" mask="url(#inDolum)"><path d="M18 12 39 37.5V18L44.5 37.5 50 18 55.5 37.5 61 18V37.5L82 12 71 79 65.75 50.5 50 89 34.25 50.5 29 79Z" transform="translate(100 14)" fill="none" stroke="url(#inG)" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round"/></g>
+      <g mask="url(#inLogoM)"><rect class="i-parilti i-parilti-logo" x="58" y="-10" width="26" height="140" fill="url(#inP)"/></g>
+      <g class="i-damlalar" filter="url(#inGoo)" fill="url(#inT)"><g class="i-damla"><rect class="i-govde" x="127.4" y="92" width="3.2" height="13" rx="1.6"/><circle class="i-boncuk" cx="129" cy="105" r="3.3"/></g><g class="i-damla"><rect class="i-govde" x="148.4" y="102" width="3.2" height="10" rx="1.6"/><circle class="i-boncuk" cx="150" cy="112" r="3.3"/></g><g class="i-damla"><rect class="i-govde" x="169.4" y="92" width="3.2" height="13" rx="1.6"/><circle class="i-boncuk" cx="171" cy="105" r="3.3"/></g></g>
+    </g>
+    <g class="i-yazi">
+      <g class="i-tv"><g class="i-tv-ic">
+        <text class="i-tv-yazi i-tv-gri" x="109.4" y="205" font-size="70.6">TV</text>
+        <text class="i-tv-yazi i-tv-renk" x="109.4" y="205" font-size="70.6" fill="url(#inT)" mask="url(#inBoya)">TV</text>
+        <g mask="url(#inTvM)"><rect class="i-parilti i-parilti-tv" x="70" y="140" width="24" height="80" fill="url(#inP)"/></g>
+        <g fill="url(#inT)"><circle class="i-sicra" cx="129" cy="161.2" r="1.15"/><circle class="i-sicra" cx="129" cy="161.2" r="0.9"/><circle class="i-sicra" cx="150" cy="161.2" r="1.15"/><circle class="i-sicra" cx="150" cy="161.2" r="0.9"/><circle class="i-sicra" cx="171" cy="161.2" r="1.15"/><circle class="i-sicra" cx="171" cy="161.2" r="0.9"/></g>
+      </g></g>
+      <g mask="url(#inGammaM)"><text class="i-gamma" x="40" y="185" font-size="44" letter-spacing="-0.97">Gamma</text></g>
+    </g>
+  </svg>
 </div>
 <div class="uygulama" id="uygulama">
   <div class="kenar-perde" aria-hidden="true"></div>
@@ -820,7 +860,8 @@ function oynat(k){if(!k)return;
   veri.sonKanal=kanalKopya(k);veri.son=[kanalKopya(k),...veri.son.filter(x=>x.url!==k.url)].slice(0,40);kaydet();
   $("sSon").textContent=sayi(veri.son.length);aktifIsaretle();
   const o=oturum={k,denenen:new Set(),bilgi:null,oynadi:false,kopma:0,tur:null,bitti:false,kodek:"",kullaniciDurdu:false};
-  durumGizle();yuklemeGoster("Yayına bağlanılıyor…",null);kontrolGoster();
+  durumGizle();yuklemeGoster("Yayına bağlanılıyor…",null);kontrolGoster();listeYatayKapat(240);
+  anim($("simdi"),[{opacity:0,transform:"translateY(5px)"},{opacity:1,transform:"none"}],{duration:420});
   const tahmin=veri.turlar[k.url]||uzantiTuru(k.url);
   if(tahmin)baslat(o,tahmin);else bilgiyleBaslat(o)}
 async function bilgiyleBaslat(o){yuklemeGoster("Yayın türü belirleniyor…",null);
@@ -836,7 +877,7 @@ function baslat(o,tur){if(o!==oturum)return;
   const iosAdr=window.IOS&&!o.iosYedek&&(tur==="hls"||tur==="ts")?(xtreamHls(o.k.url)||(tur==="hls"?o.k.url:"")):"";if(iosAdr){o.iosYerli=1;video.src=iosAdr}else if(tur==="hls"){
     if(!window.Hls||!Hls.isSupported()){video.src=o.k.url;tamponla(o,Math.min(tamponHedef,3));return}
     let kurtarma=0;
-    hls=new Hls({enableWorker:true,lowLatencyMode:false,maxBufferLength:30,maxMaxBufferLength:60,backBufferLength:30,liveSyncDurationCount:3,
+    hls=new Hls({enableWorker:true,lowLatencyMode:false,maxBufferLength:30,maxMaxBufferLength:60,backBufferLength:30,liveSyncDurationCount:3,liveDurationInfinity:true,
       manifestLoadingMaxRetry:2,levelLoadingMaxRetry:4,fragLoadingMaxRetry:6,capLevelToPlayerSize:false,testBandwidth:false,startFragPrefetch:true});
     hls.on(Hls.Events.MANIFEST_PARSED,()=>{if(o===oturum)kaliteBaslangic()});
     hls.on(Hls.Events.LEVEL_SWITCHED,(e,d)=>{if(o!==oturum)return;const l=hls.levels[d.level];o.kodek=kodekAdi(l&&l.videoCodec);bilgiGuncelle();ayarCizAcikken()});
@@ -886,6 +927,7 @@ video.addEventListener("playing",()=>{const o=oturum;if(!o)return;yuklemeGizle()
   const ilk=!o.oynadi;o.oynadi=true;o.kopma=0;o.icDurdu=false;o.sonIlerleme=Date.now();durumGizle();
   if(ilk&&o.tur&&veri.turlar[o.k.url]!==o.tur){veri.turlar[o.k.url]=o.tur;const a=Object.keys(veri.turlar);
     if(a.length>800)for(const x of a.slice(0,a.length-700))delete veri.turlar[x];kaydet()}
+  if(ilk)anim(video,[{opacity:0},{opacity:1}],{duration:420,easing:"cubic-bezier(.2,.8,.2,1)"});
   oynatIkon();bilgiGuncelle();rtxDurumCiz();kontrolGoster()});
 video.addEventListener("waiting",()=>{const o=oturum;if(!o||!$("hataEkran").hidden)return;
   if(o.oynadi&&!o.tamponda){tamponHedef=Math.min(8,tamponHedef+1.5);sorunsuz=0;o.icDurdu=true;video.pause();tamponla(o,Math.max(2.5,tamponHedef))}});
@@ -925,7 +967,8 @@ function sesIkon(){const s=video.muted?0:video.volume,r=$("kSes");if(document.ac
   $("kSesIkon").innerHTML='<path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/>'+(s===0?'<path d="M16.5 9.5l5 5M21.5 9.5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>':
     '<path d="M16 9.2a4 4 0 0 1 0 5.6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>'+(s>.5?'<path d="M18.6 6.6a7.6 7.6 0 0 1 0 10.8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>':""))}
 function dolu(r){r.style.setProperty("--dolu",((r.value-r.min)/((r.max-r.min)||1)*100)+"%")}
-function sesUygula(){video.volume=Math.min(1,Math.max(0,+veri.ses));video.muted=!!veri.sessiz;sesIkon()}
+function sesUygula(){video.volume=Math.min(1,Math.max(0,+veri.ses));video.muted=!!veri.sessiz;sesIkon();
+  try{localStorage.setItem("gammatv-ses",JSON.stringify({ses:isFinite(+veri.ses)?+veri.ses:1,sessiz:!!veri.sessiz}))}catch(e){}}   /* acilis sesi bunu okur */
 function oynatDuraklat(){const o=oturum;if(!o)return;
   if(video.paused&&!o.icDurdu&&!o.tamponda){o.kullaniciDurdu=false;oynatGercek(o)}else{o.kullaniciDurdu=true;clearInterval(tamponZaman);o.tamponda=false;o.icDurdu=false;video.pause()}
   oynatIkon()}
@@ -936,11 +979,22 @@ ekran.addEventListener("wheel",e=>{if(!oturum||e.target.closest(".ayar-panel"))r
   veri.ses=Math.min(1,Math.max(0,(+veri.ses||0)+(e.deltaY<0?.05:-.05)));veri.sessiz=false;sesUygula();kaydet();durum("Ses %"+Math.round(veri.ses*100))},{passive:false});
 function zamanGuncelle(){const d=video.duration,vod=isFinite(d)&&d>0;$("kCanli").hidden=vod;$("kSure").hidden=!vod;$("simdiEtiket").classList.toggle("vod",vod);
   if(vod){const r=$("kSeek");if(document.activeElement!==r){r.max=d;r.value=video.currentTime;dolu(r)}$("kZaman").textContent=sureYaz(video.currentTime)+" / "+sureYaz(d)}
-  else{const b=video.buffered,son=b.length?b.end(b.length-1):0,geride=!!oturum&&oturum.oynadi&&son-video.currentTime>Math.max(12,tamponHedef+8);
-    $("kCanli").classList.toggle("geride",geride);$("kCanliYazi").textContent=geride?"CANLIYA DÖN":"CANLI"}}
+  else{const o=oturum,gecikme=canliUc()-video.currentTime;
+    /* her oynatici canli yayinin biraz gerisinde oynar (iPhone ve hls.js ~3 parca); bu dogal gecikme ilk saniyelerde olculur */
+    if(o&&o.oynadi&&!video.paused&&o.temel==null){o.temelBas=o.temelBas||Date.now();if(Date.now()-o.temelBas>4000)o.temel=Math.max(0,Math.min(gecikme,60))}
+    const geride=!!o&&o.oynadi&&o.temel!=null&&gecikme>Math.max(12,o.temel+10);
+    if($("kCanli").classList.contains("geride")!==geride){$("kCanli").classList.toggle("geride",geride);$("kCanliYazi").textContent=geride?"CANLIYA DÖN":"CANLI"}}}
+/* canli ucun tahmini: yerel HLS (iPhone) ve hls.js aranabilir araligi verir, MSE akislarinda tamponun sonu */
+function canliUc(){const s=video.seekable,b=video.buffered;return Math.max(s.length?s.end(s.length-1):0,b.length?b.end(b.length-1):0)}
+/* duraklatildiginda timeupdate gelmez; canli dugmesi yine de guncel kalsin */
+setInterval(()=>{if(oturum&&video.paused&&!document.hidden)zamanGuncelle()},1000);
 $("kSeek").addEventListener("input",e=>{dolu(e.target);video.currentTime=+e.target.value});
 $("kCanli").onclick=()=>{if(!$("kCanli").classList.contains("geride"))return;
-  if(hls&&hls.liveSyncPosition)video.currentTime=hls.liveSyncPosition;else{const b=video.buffered;if(b.length)video.currentTime=Math.max(b.start(b.length-1),b.end(b.length-1)-tamponHedef)}};
+  if(hls&&hls.liveSyncPosition)video.currentTime=hls.liveSyncPosition;
+  else{const b=video.buffered,s=video.seekable,geri=oturum&&oturum.temel!=null?Math.max(1,oturum.temel):tamponHedef,uc=canliUc(),bas=s.length?s.start(s.length-1):b.length?b.start(b.length-1):0;
+    if(uc)video.currentTime=Math.max(bas,uc-geri)}
+  if(video.paused&&oturum){oturum.kullaniciDurdu=false;oynatGercek(oturum)}
+  setTimeout(zamanGuncelle,60)};
 let kontrolZaman=0,kontrolUstunde=false;
 function kontrolGoster(){ekran.classList.remove("kontrol-gizli");clearTimeout(kontrolZaman);kontrolZaman=setTimeout(kontrolGizleDene,2600)}
 function kontrolGizleDene(){if(!oturum||video.paused||!$("ayarPanel").hidden||kontrolUstunde||!$("hataEkran").hidden)return kontrolGoster();ekran.classList.add("kontrol-gizli")}
@@ -1082,14 +1136,25 @@ function tamEkran(){sinema(!document.body.classList.contains("sinema"))}
 $("kTam").onclick=tamEkran;
 document.addEventListener("fullscreenchange",()=>{if(!document.fullscreenElement&&!api()&&document.body.classList.contains("sinema"))sinema(false)});
 const darEkran=matchMedia("(max-width:1000px)");
+/* panel disina dokunmak paneli kapatir; o dokunus alttaki ogeye (or. videoyu duraklatmaya) gecmez */
+function tiklamaYut(){const y=e=>{e.stopPropagation();e.preventDefault()};document.addEventListener("click",y,{capture:true,once:true});setTimeout(()=>document.removeEventListener("click",y,true),450)}
 document.addEventListener("pointerdown",e=>{const u=$("uygulama");if(!darEkran.matches||u.classList.contains("kenar-yok"))return;
-  if(!e.target.closest(".kenar,#kenarBtn,.perde"))$("kenarBtn").click()},true);
+  if(!e.target.closest(".kenar,#kenarBtn,.perde")){$("kenarBtn").click();tiklamaYut()}},true);
 document.addEventListener("click",e=>{if(darEkran.matches&&e.target.closest(".kenar .oge")&&!e.target.closest(".sil"))setTimeout(()=>{if(!$("uygulama").classList.contains("kenar-yok"))$("kenarBtn").click()},180)});
 let cekmeceAcik=false;
 darEkran.addEventListener("change",()=>{cekmeceAcik=false;panelUygula()});
-function panelUygula(){const d=veri.duzen||{},u=$("uygulama"),kg=darEkran.matches?!cekmeceAcik:!!d.kenarGizli;u.classList.toggle("kenar-yok",kg);u.classList.toggle("liste-yok",!!d.listeGizli);
-  $("kenarBtn").classList.toggle("kapali",kg);$("listeBtn").classList.toggle("kapali",!!d.listeGizli)}
-function panelDegis(ad){if(ad==="kenar"&&darEkran.matches){window.__renkBekle=performance.now()+650;cekmeceAcik=!cekmeceAcik;panelUygula();return}veri.duzen={...veri.duzen};const k=ad==="kenar"?"kenarGizli":"listeGizli";veri.duzen[k]=!veri.duzen[k];panelUygula();kaydet();
+/* yatay telefon: liste kayan paneldir ve acik/kapali durumu kaydedilmez; kanal oynuyorsa kapali baslar */
+const yatayTelefon=matchMedia("(max-height:520px)");let listeAcikYatay=false;
+yatayTelefon.addEventListener("change",()=>{listeAcikYatay=!aktif;panelUygula()});
+const listeGizliMi=()=>yatayTelefon.matches?!listeAcikYatay:!!(veri.duzen||{}).listeGizli;
+function listeYatayKapat(gecikme){if(!yatayTelefon.matches||!listeAcikYatay)return;setTimeout(()=>{listeAcikYatay=false;panelUygula()},gecikme||0)}
+document.addEventListener("pointerdown",e=>{if(yatayTelefon.matches&&listeAcikYatay&&!e.target.closest(".liste,#listeBtn,.perde,.kenar,#kenarBtn,.kenar-perde")){tiklamaYut();listeYatayKapat(0)}},true);
+function panelUygula(){const d=veri.duzen||{},u=$("uygulama"),kg=darEkran.matches?!cekmeceAcik:!!d.kenarGizli,lg=listeGizliMi();u.classList.toggle("kenar-yok",kg);u.classList.toggle("liste-yok",lg);
+  $("kenarBtn").classList.toggle("kapali",kg);$("listeBtn").classList.toggle("kapali",lg)}
+function panelDegis(ad){window.__renkBekle=performance.now()+650;
+  if(ad==="kenar"&&darEkran.matches){cekmeceAcik=!cekmeceAcik;panelUygula();return}
+  if(ad==="liste"&&yatayTelefon.matches){listeAcikYatay=!listeAcikYatay;panelUygula();if(listeAcikYatay)requestAnimationFrame(satirCiz);return}
+  veri.duzen={...veri.duzen};const k=ad==="kenar"?"kenarGizli":"listeGizli";veri.duzen[k]=!veri.duzen[k];panelUygula();kaydet();
   setTimeout(()=>{satirCiz();vurguTasi();rtxDurumCiz()},560)}
 $("kenarBtn").onclick=()=>panelDegis("kenar");$("listeBtn").onclick=()=>panelDegis("liste");
 function kanalAdim(d){if(!gorunen.length)return;let i=aktif?gorunen.findIndex(k=>k.url===aktif.url):-1;i=(i+d+gorunen.length)%gorunen.length;oynat(gorunen[i]);
@@ -1158,23 +1223,187 @@ function ekleAc(){if(document.querySelector(".perde"))return;
 function adUret(u){try{const x=new URL(u),p=x.pathname.split("/").filter(Boolean).pop();
   return decodeURIComponent(p&&!/^\d+$/.test(p)&&!/^(get|index|playlist)\.php$/i.test(p)?p.replace(/\.(m3u8?|ts|mp3)$/i,""):x.hostname)}catch(e){return u}}
 
-/* =================== acilis animasyonu =================== */
+/* =================== acilis animasyonu ===================
+   Zaman cizelgesi (ms): 30 logo dolmaya baslar (bos bekleme yok) · 530-690 damlalar uzar · 950-1110 kopup duser · ~1340-1550 TV'ye carpar,
+   renk yayilir · 1940 Gamma katilir, kilit · 2470 parilti · 2940 marka yerine suzulur · ~3540 biter */
 let introTamam=false,introBekleyen=null;
-function introBitir(atla){const i=$("intro");if(introTamam)return;introTamam=true;
-  if(i){if(atla){i.classList.add("atla");setTimeout(()=>i.remove(),280)}else i.remove()}
+function introBitir(){if(introTamam)return;introTamam=true;
   const o=introBekleyen;introBekleyen=null;if(o&&o===oturum&&!o.tamponda)oynatGercek(o)}
-(()=>{const i=$("intro");if(!i){introTamam=true;return}
-  i.addEventListener("animationend",e=>{if(e.target===i)introBitir(false)});
-  i.addEventListener("pointerdown",()=>introBitir(true));
-  document.addEventListener("keydown",()=>introBitir(true),{once:true,capture:true});
-  setTimeout(()=>introBitir(false),3400)})();
+(()=>{const i=$("intro"),kok=document.documentElement;if(!i){introTamam=true;kok.classList.remove("intro");return}
+  const S=i.querySelector(".intro-sahne"),q=x=>S.querySelector(x),qa=x=>[...S.querySelectorAll(x)];
+  const CIK="cubic-bezier(.2,.8,.2,1)",DUS="cubic-bezier(.55,.06,.9,.5)",ZIP="cubic-bezier(.34,1.5,.5,1)",ORT="cubic-bezier(.65,0,.35,1)";
+  const AN=[],a=(el,k,o)=>{if(!el||!el.animate)return null;const x=el.animate(k,{fill:"forwards",...o});AN.push(x);return x};
+  const TVX=109.4,TVY=205,TVF=70.6,SON_F=50.16,SON_Y=185,CARP=TVY-.606*TVF;
+  const uclar=[{x:129,y:93,L:13,t:610},{x:150,y:103,L:10,t:530},{x:171,y:93,L:13,t:690}];
+  let bitti=false,cikti=false;
+  /* ---- acilis sesi: dosya yok; Web Audio ile o an uretilir ve goruntuyle ayni zaman cizelgesine baglanir.
+     dolum: hafif hava + bos besli (A-E) · her damla carptigi yerde (orta/sol/sag) yukselen nota: A5, C#6, E6 ·
+     renk yayilirken kabaran tini · kilitte bas girer, akor Dmaj9'a cozulur · Gamma soldan saga acilirken hafif ruzgar ·
+     iki parilti iki can (D6, A6) · marka yerine suzulurken soner. Uygulamanin ses duzeyine ve sessiz ayarina uyar. */
+  function sesDuzeyi(){let d=1;try{const s=JSON.parse(localStorage.getItem("gammatv-ses")||"null");if(s&&typeof s==="object")d=s.sessiz?0:Math.max(0,Math.min(1,isFinite(+s.ses)?+s.ses:1))}catch(e){}return d}
+  /* yansima (zamanla koyulasan, sonumlenen gurultuden yapay oda) ve gurultu tamponu; yansima dugumu de burada kurulur:
+     bunlar acilis animasyonu baslamadan hazirlanir ki animasyon sirasinda ana is parcacigi bos kalsin */
+  function sesTamponlari(c){const sr=c.sampleRate,n=Math.round(1.1*sr),ir=c.createBuffer(2,n,sr),ac=Math.round(.012*sr),dz=Math.exp(-3.1/sr),dk=Math.exp(-2.6/sr);
+    for(let k=0;k<2;k++){const v=ir.getChannelData(k);let lp=0,zf=1,kf=.55;for(let j=0;j<n;j++){lp+=(Math.random()*2-1-lp)*(.12+kf);kf*=dk;v[j]=lp*zf*(j<ac?j/ac:1);zf*=dz}}
+    const gb=c.createBuffer(1,sr,sr),gv=gb.getChannelData(0);for(let j=0;j<sr;j++)gv[j]=Math.random()*2-1;
+    const yan=c.createConvolver();yan.buffer=ir;return{gb,yan}}
+  function introSesi(c,t0,z,duzey,tm){tm=tm||sesTamponlari(c);
+    const T=x=>t0+x,gecmis=t=>t<c.currentTime-.03,ilk=Math.max(T(.02),c.currentTime+.03),kT=T(z.kilit);
+    const ana=c.createGain(),kes=c.createGain(),kmp=c.createDynamicsCompressor();
+    kmp.threshold.value=-16;kmp.knee.value=10;kmp.ratio.value=3;kmp.attack.value=.004;kmp.release.value=.25;
+    const SV=.9*duzey;ana.gain.value=SV;ana.connect(kmp);kmp.connect(kes);kes.connect(c.destination);
+    const yan=tm.yan,yanG=c.createGain(),gb=tm.gb;yanG.gain.value=.34;yan.connect(yanG);yanG.connect(ana);
+    const panla=p=>{if(!c.createStereoPanner)return c.createGain();const x=c.createStereoPanner();x.pan.value=p;return x};
+    const bagla=(dg,ys)=>{dg.connect(ana);if(ys){const g=c.createGain();g.gain.value=ys;dg.connect(g);g.connect(yan)}};
+    const osc=(tip,f,t,son)=>{const o=c.createOscillator();o.type=tip;o.frequency.value=f;o.start(t);o.stop(son);return o};
+    const zarf=(g,t,tepe,atak,sure)=>{g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(tepe,t+atak);g.gain.exponentialRampToValueAtTime(.0001,t+sure)};
+    const katman=[];
+    if(!z.kisa){
+      /* 1) dolum: bant geciren gurultu yukari suzulur, altta yumusak bos besli (A-E) */
+      if(ilk<T(.25))katman.push(()=>{const t=ilk;
+        const ks=c.createBufferSource();ks.buffer=gb;ks.loop=true;const f=c.createBiquadFilter();f.type="bandpass";f.Q.value=.8;
+        f.frequency.setValueAtTime(240,t);f.frequency.exponentialRampToValueAtTime(2400,T(.9));
+        const g=c.createGain();g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.045,T(.62));g.gain.exponentialRampToValueAtTime(.0001,T(1.05));
+        ks.connect(f);f.connect(g);bagla(g,.35);ks.start(t);ks.stop(T(1.1));
+        [[110,.03],[164.81,.022]].forEach(([fr,v])=>{const g=c.createGain(),lp=c.createBiquadFilter();lp.type="lowpass";lp.frequency.value=700;
+          g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,T(.9));g.gain.setValueAtTime(v,T(1.85));g.gain.exponentialRampToValueAtTime(.0001,T(2.35));
+          osc("triangle",fr,t,T(2.4)).connect(lp);lp.connect(g);bagla(g,.25)})});
+      /* 2) damlalar: carpma aninda, carptigi yerde (orta/sol/sag) yukselen notalar A5, C#6, E6; sudaki gibi kisa bir yukari kayis */
+      z.damla.forEach((dm,j)=>katman.push(()=>{const t=T(dm.t);if(gecmis(t))return;const f=[880,1108.73,1318.51][j]||880,p=panla(dm.pan);bagla(p,.5);
+        const g=c.createGain(),o=osc("sine",f,t,t+.75);o.frequency.setValueAtTime(f*.62,t);o.frequency.exponentialRampToValueAtTime(f,t+.028);o.frequency.exponentialRampToValueAtTime(f*1.01,t+.4);
+        g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.24,t+.006);g.gain.exponentialRampToValueAtTime(.05,t+.13);g.gain.exponentialRampToValueAtTime(.0001,t+.7);o.connect(g);g.connect(p);
+        const g2=c.createGain();zarf(g2,t,.045,.004,.17);osc("sine",f*2.76,t,t+.2).connect(g2);g2.connect(p);
+        const g3=c.createGain();zarf(g3,t,.03,.005,.3);osc("sine",f*2,t,t+.35).connect(g3);g3.connect(p)}));
+      /* 3) renk yayilirken kabaran tini (Aadd9): filtre acilir, ses kilide dogru buyur */
+      katman.push(()=>{const b0=T(z.damla.length?z.damla[0].t:1.36);if(gecmis(b0))return;
+        const lp=c.createBiquadFilter();lp.type="lowpass";lp.Q.value=.9;lp.frequency.setValueAtTime(420,b0);lp.frequency.exponentialRampToValueAtTime(2600,kT);
+        const g=c.createGain();g.gain.setValueAtTime(.00001,b0);g.gain.exponentialRampToValueAtTime(.0055,kT);g.gain.setTargetAtTime(.00001,kT+.02,.12);lp.connect(g);bagla(g,.45);
+        [220,277.18,329.63,493.88].forEach(fr=>[-7,7].forEach(dt=>{const o=osc("sawtooth",fr,b0,kT+.8);o.detune.value=dt;o.connect(lp)}))})}
+    /* 4) kilit: bas girer (kisa, akortlu bir vurus) ve akor Dmaj9'a cozulur (V'ten I'e) */
+    katman.push(()=>{const k=Math.max(kT,c.currentTime+.03);
+      const g=c.createGain(),o=osc("sine",146.83,k,k+.6);o.frequency.setValueAtTime(146.83,k);o.frequency.exponentialRampToValueAtTime(73.42,k+.14);
+      g.gain.setValueAtTime(.0001,k);g.gain.exponentialRampToValueAtTime(.22,k+.012);g.gain.exponentialRampToValueAtTime(.0001,k+.55);o.connect(g);bagla(g,0);
+      const g2=c.createGain();g2.gain.setValueAtTime(.0001,k);g2.gain.exponentialRampToValueAtTime(.07,k+.08);g2.gain.exponentialRampToValueAtTime(.0001,k+1.9);osc("sine",73.42,k,k+2).connect(g2);bagla(g2,0)});
+    katman.push(()=>{const k=Math.max(kT,c.currentTime+.03);
+      const lp=c.createBiquadFilter();lp.type="lowpass";lp.Q.value=.7;lp.frequency.setValueAtTime(900,k);lp.frequency.exponentialRampToValueAtTime(3000,k+.18);lp.frequency.exponentialRampToValueAtTime(1100,k+1.6);
+      const g=c.createGain();g.gain.setValueAtTime(.00001,k);g.gain.exponentialRampToValueAtTime(.007,k+.16);g.gain.exponentialRampToValueAtTime(.0024,k+1.1);g.gain.exponentialRampToValueAtTime(.00001,k+2.2);lp.connect(g);bagla(g,.5);
+      [146.83,220,369.99,554.37,659.26].forEach(fr=>[-6,6].forEach(dt=>{const o=osc("sawtooth",fr,k,k+2.3);o.detune.value=dt;o.connect(lp)}))});
+    /* 5) Gamma soldan saga acilirken hafif ruzgar, o da soldan saga gezinir */
+    if(!z.kisa)katman.push(()=>{const t=T(z.gamma);if(gecmis(t))return;const ks=c.createBufferSource();ks.buffer=gb;ks.loop=true;const f=c.createBiquadFilter();f.type="bandpass";f.Q.value=1.1;
+      f.frequency.setValueAtTime(800,t);f.frequency.exponentialRampToValueAtTime(4200,t+.6);
+      const g=c.createGain();g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.026,t+.22);g.gain.exponentialRampToValueAtTime(.0001,t+.68);
+      const p=panla(-.6);if(p.pan){p.pan.setValueAtTime(-.6,t);p.pan.linearRampToValueAtTime(.6,t+.68)}
+      ks.connect(f);f.connect(g);g.connect(p);bagla(p,.3);ks.start(t);ks.stop(t+.72)});
+    /* 6) iki parilti, iki can: D6 ve A6 (FM ile cam tinisi) */
+    z.parilti.forEach((pt,j)=>katman.push(()=>{const t=z.kisa?Math.max(kT,c.currentTime+.03)+.12+j*.12:T(pt);if(gecmis(t))return;const f=j?1760:1174.66,p=panla(j?.22:-.18);bagla(p,.6);
+      const mg=c.createGain();mg.gain.setValueAtTime(f*4,t);mg.gain.exponentialRampToValueAtTime(f*.05,t+.9);osc("sine",f*3.5,t,t+1.8).connect(mg);
+      const o=osc("sine",f,t,t+1.8);mg.connect(o.frequency);const g=c.createGain();g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(j?.065:.1,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+1.7);
+      o.connect(g);g.connect(p)}));
+    /* 7) marka yerine suzulurken sonumlenir; yayinin sesi bunun ustune gelir */
+    if(!z.kisa){const t=Math.max(T(z.suzul),c.currentTime+.03);ana.gain.setValueAtTime(SV,t);ana.gain.setTargetAtTime(.0001,t,.2)}
+    /* katmanlar bos anlarda, kare basina birkac ms ile kurulur (animasyon takilmasin); cevrimdisi islemede hepsi hemen */
+    const cevrimdisi=window.OfflineAudioContext&&c instanceof OfflineAudioContext;
+    if(cevrimdisi||z.kisa)katman.splice(0).forEach(f=>f());
+    else{const sonraki=()=>window.requestIdleCallback?requestIdleCallback(isle,{timeout:90}):setTimeout(isle,16);
+      const isle=()=>{const b=performance.now();while(katman.length&&performance.now()-b<4){try{katman.shift()()}catch(e){}}if(katman.length)sonraki()};
+      if(katman.length)katman.shift()();sonraki()}
+    return{sus(sure){katman.length=0;const t=c.currentTime;kes.gain.setValueAtTime(1,t);kes.gain.setTargetAtTime(.0001,t,Math.max(.02,sure/3))}}}
+  window.__introSesi=introSesi;
+  let SC=null;
+  try{const AC=window.AudioContext||window.webkitAudioContext,dz=sesDuzeyi();
+    if(AC&&dz>.02&&!document.hidden){const c=new AC({latencyHint:"interactive"});SC={c,d:dz,ses:null,tm:sesTamponlari(c)};if(c.state!=="running")c.resume().catch(()=>{})}}catch(e){SC=null}
+  /* sesi animasyonun gercek baslangicina bagla: getOutputTimestamp hoparlor gecikmesini de hesaba katar */
+  function sesiBaslat(z,an){window.__introSesZ=z;if(!SC)return;const s=SC,c=s.c,sinir=performance.now()+900;
+    (function dene(){if(SC!==s)return;
+      if(c.state!=="running"||!an||an.startTime==null){if(performance.now()<sinir)setTimeout(dene,40);else sesKapat(0);return}
+      const ts=c.getOutputTimestamp?c.getOutputTimestamp():null,ekran=.016;
+      const bas=ts&&ts.performanceTime>0?ts.contextTime+(an.startTime-ts.performanceTime)/1000+ekran:c.currentTime+(an.startTime-performance.now())/1000-(c.baseLatency||0)-(c.outputLatency||0)+ekran;
+      try{s.ses=introSesi(c,bas,z,s.d,s.tm)}catch(e){sesKapat(0)}})()}
+  function sesKapat(sure){const s=SC;if(!s)return;SC=null;try{if(s.ses)s.ses.sus(sure)}catch(e){}setTimeout(()=>{try{s.c.close()}catch(e){}},sure*1000+500)}
+  function kaldir(){if(bitti)return;bitti=true;introBitir();kok.classList.remove("intro");i.remove();sesKapat(.35)}
+  function hizliCik(){if(cikti)return;cikti=true;sesKapat(.15);i.dataset.cikis="1";try{window.__cubuk&&window.__cubuk()}catch(e){}introBitir();
+    const x=i.animate([{opacity:1},{opacity:0}],{duration:AZ_HAREKET?200:260,easing:"ease-in",fill:"forwards"});x.onfinish=kaldir;setTimeout(kaldir,400)}
+  /* son kilit: Gamma ve TV yan yana, ortalanmis */
+  function kilitHesapla(){const g=q(".i-gamma");let gw=0;try{gw=g.getComputedTextLength()}catch(e){}if(!gw)gw=150;
+    const tvw=1.19*SON_F,bas=150-(gw+1.5+tvw)/2,s=SON_F/TVF;g.setAttribute("x",bas.toFixed(2));
+    const p=q(".i-gamma-perde");p.setAttribute("x",(bas-3).toFixed(2));p.setAttribute("width",(gw+6).toFixed(2));
+    return{s,tx:bas+gw+1.5-s*TVX,ty:SON_Y-s*TVY}}
+  /* gorunur marka hedefi (telefonda ust cubuk, genis ekranda kenar cubugu) */
+  function hedefBul(){for(const sec of[".ust-marka",".kenar .marka"]){const m=document.querySelector(sec);if(!m)continue;
+      const svg=m.querySelector("svg"),b=m.querySelector("b");if(!svg||!b)continue;const r=svg.getBoundingClientRect(),rb=b.getBoundingClientRect();
+      if(r.width>4&&r.height>4&&r.right>0&&r.bottom>0&&r.left<innerWidth&&r.top<innerHeight&&getComputedStyle(m).display!=="none")
+        return{logo:(svg.querySelector(":scope>path")||svg).getBoundingClientRect(),yazi:rb}}return null}
+  function suzul(){if(cikti)return;cikti=true;i.dataset.cikis="1";try{window.__cubuk&&window.__cubuk()}catch(e){}introBitir();
+    const z=i.querySelector(".intro-zemin"),renk=getComputedStyle(i).backgroundColor;z.style.background=renk;i.style.background="transparent";
+    const h=hedefBul(),SURE=540,EG="cubic-bezier(.6,0,.18,1)";
+    a(z,[{opacity:1},{opacity:0}],{duration:460,delay:60,easing:"cubic-bezier(.4,0,.2,1)"});
+    qa(".i-govde").forEach(g=>a(g,[{opacity:1},{opacity:0}],{duration:160}));
+    if(h){const sr=S.getBoundingClientRect(),k=sr.width/300,ust=q(".i-ust"),lp=q(".i-logo path").getBoundingClientRect();
+      /* logo: yol kutusunun merkezi etrafinda olcekle, ust cubuktaki logonun ustune otur */
+      const cx=(lp.left+lp.width/2-sr.left)/k,cy=(lp.top+lp.height/2-sr.top)/k-22;ust.style.transformOrigin=cx+"px "+cy+"px";
+      const ol=h.logo.height/lp.height,dx=(h.logo.left+h.logo.width/2)-(lp.left+lp.width/2),dy=(h.logo.top+h.logo.height/2)-(lp.top+lp.height/2);
+      a(ust,[{transform:"translate(0px,22px) scale(1)"},{transform:`translate(${dx/k}px,${22+dy/k}px) scale(${ol})`}],{duration:SURE,easing:EG});
+      /* yazi: Gamma+TV birlikte ust cubuktaki "GammaTV" yazisinin yerine */
+      const g=q(".i-gamma").getBoundingClientRect(),t=q(".i-tv-ic").getBoundingClientRect();
+      const yl=Math.min(g.left,t.left),yr=Math.max(g.right,t.right),yt=Math.min(g.top,t.top),yb=Math.max(g.bottom,t.bottom);
+      const yo=h.yazi.width/(yr-yl),ycx=(yl+yr)/2,ycy=(yt+yb)/2,yz=q(".i-yazi");
+      yz.style.transformOrigin=((ycx-sr.left)/k)+"px "+((ycy-sr.top)/k)+"px";
+      a(yz,[{transform:"none"},{transform:`translate(${(h.yazi.left+h.yazi.width/2-ycx)/k}px,${(h.yazi.top+h.yazi.height/2-ycy)/k}px) scale(${yo})`}],{duration:SURE,delay:30,easing:EG});
+      setTimeout(kaldir,SURE+60)}
+    else{a(S,[{transform:"none",opacity:1},{transform:"scale(1.05)",opacity:0}],{duration:420,easing:"cubic-bezier(.4,0,.2,1)"});setTimeout(kaldir,480)}}
+  function sonDurum(){const k=kilitHesapla();q(".i-dalga").style.transform="translate(0,118px)";q(".i-logo").style.opacity=1;
+    q(".i-tv-ic").style.opacity=1;qa(".i-leke").forEach(l=>l.style.transform="none");q(".i-tv").style.transform=`translate(${k.tx}px,${k.ty}px) scale(${k.s})`;
+    q(".i-gamma").style.opacity=1;q(".i-gamma-perde").style.transform="none";q(".i-ust").style.transform="translate(0,22px)"}
+  function oynat(){if(cikti)return;
+    if(AZ_HAREKET||!S.animate){sonDurum();sesiBaslat({kisa:true,kilit:.05,parilti:[0,0],damla:[]},{startTime:performance.now()});setTimeout(()=>{sesKapat(.45);hizliCik()},900);return}
+    const T0=30,ZK=1940,ZG=2130,ZP=[2470,2590],ZS=2940,damlalar=[];
+    /* 1) logo sivi gibi yukaridan asagi dolar, hafifce yakinlasir */
+    a(q(".i-dalga"),[{transform:"translate(-6px,18px)"},{transform:"translate(4px,68px)",offset:.55},{transform:"translate(0,118px)"}],{duration:780,delay:T0,easing:"cubic-bezier(.45,.05,.3,1)"});
+    a(q(".i-logo"),[{opacity:0,transform:"scale(.93)"},{opacity:1,transform:"scale(.97)",offset:.2},{opacity:1,transform:"none"}],{duration:1050,delay:T0,easing:CIK});
+    /* renksiz TV belirir */
+    a(q(".i-tv-ic"),[{opacity:0,transform:"translateY(8px)"},{opacity:1,transform:"none"}],{duration:480,delay:450,easing:CIK});
+    let ilkCarpma=1e9;
+    uclar.forEach((u,n)=>{const d=q(".i-damla:nth-child("+(n+1)+")"),g=d.querySelector(".i-govde"),b=d.querySelector(".i-boncuk");
+      /* 2) damla uzar (gerilip toparlanir) */
+      a(g,[{transform:"scaleY(0)"},{transform:"scaleY(1.12)",offset:.72},{transform:"scaleY(1)"}],{duration:470,delay:u.t,easing:CIK});
+      a(b,[{opacity:0,transform:`translateY(${-u.L}px) scale(.35)`},{opacity:1,transform:`translateY(${-u.L*.4}px) scale(.8)`,offset:.3},{opacity:1,transform:"translateY(0) scale(1)"}],{duration:470,delay:u.t,easing:ZIP});
+      /* 3) kopar, yercekimiyle duser: duserken uzar, carpinca yassilir */
+      const kop=u.t+420,dus=CARP-3.3+1-(u.y-1+u.L),sure=Math.round(250+dus*3.4),carp=kop+sure;ilkCarpma=Math.min(ilkCarpma,carp);damlalar.push({t:carp/1000,pan:(u.x-150)/60});
+      a(g,[{transform:"scaleY(1)"},{transform:"scaleY(.22)",offset:.55},{transform:"scaleY(.34)"}],{duration:420,delay:kop,easing:ZIP,composite:"replace"});
+      a(b,[{transform:"translateY(0) scale(1,1)"},{transform:`translateY(${dus*.42}px) scale(.9,1.14)`,offset:.55},{transform:`translateY(${dus}px) scale(.8,1.32)`}],{duration:sure,delay:kop,easing:DUS});
+      a(b,[{transform:`translateY(${dus}px) scale(.8,1.32)`,opacity:1},{transform:`translateY(${dus+1.4}px) scale(1.9,.38)`,opacity:1,offset:.45},{transform:`translateY(${dus+1.6}px) scale(2.3,.2)`,opacity:0}],{duration:190,delay:carp,easing:"ease-out"});
+      /* 4) renk carpma noktasindan yayilir, minik damlaciklar sicrar */
+      a(qa(".i-leke")[n],[{transform:"scale(0)"},{transform:"scale(1)"}],{duration:760,delay:carp,easing:CIK});
+      const sc=qa(".i-sicra").slice(n*2,n*2+2);
+      sc.forEach((c,m)=>{const yon=(m?1:-1)*(n===1?1:(n===0?-1:1))*(m?1:.8),x1=yon*7,x2=yon*11;
+        a(c,[{opacity:1,transform:"translate(0,0) scale(1)"},{opacity:1,transform:`translate(${x1}px,-${m?8:6}px) scale(1)`,offset:.45},{opacity:0,transform:`translate(${x2}px,${m?1:3}px) scale(.5)`}],{duration:460,delay:carp+20,easing:"cubic-bezier(.3,.6,.5,1)"})});
+      setTimeout(()=>{if(!cikti&&b.isConnected)b.remove()},carp+260)});
+    /* TV ilk carpmada jole gibi yaylanir */
+    a(q(".i-tv-ic"),[{transform:"none"},{transform:"scale(1.035,.94)",offset:.35},{transform:"scale(.99,1.02)",offset:.7},{transform:"none"}],{duration:380,delay:ilkCarpma,easing:"ease-out",composite:"replace"});
+    /* 5) kilit: logo hafifce iner, TV yerine kucularak gecer, Gamma TV'nin arkasindan acilir */
+    const k=kilitHesapla();
+    a(q(".i-ust"),[{transform:"translate(0,0)"},{transform:"translate(0px,22px)"}],{duration:660,delay:ZK,easing:ORT});
+    a(q(".i-tv"),[{transform:"translate(0px,0px) scale(1)"},{transform:`translate(${k.tx}px,${k.ty}px) scale(${k.s})`}],{duration:660,delay:ZK,easing:ORT});
+    a(q(".i-gamma-perde"),[{transform:"scaleX(0)"},{transform:"scaleX(1)"}],{duration:640,delay:ZG+20,easing:"cubic-bezier(.3,.6,.2,1)"});
+    a(q(".i-gamma"),[{opacity:0,transform:"translateX(-14px)"},{opacity:1,transform:"none"}],{duration:680,delay:ZG,easing:CIK});
+    /* 6) parilti: once logoda, sonra TV'de */
+    a(q(".i-parilti-logo"),[{transform:"translateX(0)"},{transform:"translateX(170px)"}],{duration:760,delay:ZP[0],easing:"cubic-bezier(.45,0,.2,1)"});
+    a(q(".i-parilti-tv"),[{transform:"translateX(0)"},{transform:"translateX(150px)"}],{duration:700,delay:ZP[1],easing:"cubic-bezier(.45,0,.2,1)"});
+    /* 7) ust cubuktaki markaya suzulur */
+    sesiBaslat({damla:damlalar.sort((x,y)=>x.t-y.t),kilit:ZK/1000,gamma:ZG/1000,parilti:ZP.map(x=>x/1000),suzul:ZS/1000},AN[0]);
+    setTimeout(suzul,ZS)}
+  i.addEventListener("pointerdown",hizliCik);
+  document.addEventListener("keydown",hizliCik,{once:true,capture:true});
+  setTimeout(()=>{if(!cikti)hizliCik()},6000);
+  const yaziTipi=document.fonts&&document.fonts.load?document.fonts.load('800 70px "GammaTV Marka"').catch(()=>{}):Promise.resolve();
+  Promise.race([yaziTipi,new Promise(r=>setTimeout(r,500))]).then(()=>requestAnimationFrame(oynat))})();
 
 /* =================== acilis =================== */
 async function basla(){
   try{const y=await api().yukle();if(y&&typeof y==="object")veri=Object.assign(veri,y)}catch(e){}
   veri.turlar=veri.turlar||{};veri.duzen=veri.duzen||{};delete veri.rtxPencere;
   for(const k of veri.kaynaklar)if(k.tur!=="yayin")durumlar[k.id]={ad:k.ad,asama:"bekle",alinan:0,toplam:0};
-  sesUygula();panelUygula();rtxUygula();goruntuUygula(true);kenarCiz();listeCiz(false);ilerlemeCiz();hevcKontrol();
+  listeAcikYatay=!veri.sonKanal;sesUygula();panelUygula();rtxUygula();goruntuUygula(true);kenarCiz();listeCiz(false);ilerlemeCiz();hevcKontrol();
   segAyarla($("sekmeler"),0,true);
   {let t=document.documentElement.dataset.tema||"";if(!t&&veri.tema){t=veri.tema;try{localStorage.setItem("gammatv-tema",t)}catch(e){}}temaUygula(t,true)}
   for(const k of veri.kaynaklar)if(k.icerik){try{await fetch("/onbellek/"+k.id,{method:"POST",body:k.icerik})}catch(e){}delete k.icerik;kaydet()}
