@@ -12,7 +12,9 @@ d('url:location.origin+u}', 'url:new URL(u,location.href).href}')          # oze
 d('{enableWorker:true,enableStashBuffer:false', '{enableWorker:false,enableStashBuffer:false')   # iPhone: MPEG-TS ana is parcaciginda
 d('if(!window.Hls||!Hls.isSupported())return basarisiz(o,"HLS oynatıcı yüklenemedi.",false);',
   'if(!window.Hls||!Hls.isSupported()){video.src=o.k.url;tamponla(o,Math.min(tamponHedef,3));return}')   # iOS 17.1 oncesi: yerlesik HLS
-d('else video.src=u;', 'else video.src=o.k.url;')                         # dosya/radyo: iPhone oynaticisi dogrudan acar
+d('else video.src=u;', 'else video.src=o.k.url;')
+d('content="width=device-width, initial-scale=1, viewport-fit=cover"',
+  'content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"')   # iki parmakla yakinlastirma kapali                         # dosya/radyo: iPhone oynaticisi dogrudan acar
 d("'<i class=\"nokta\"></i>Bu bilgisayarda kapalı. Microsoft Store\\'dan ücretsiz “HEVC Video Extensions from Device Manufacturer” uzantısını kurup uygulamayı yeniden başlat.'",
   "'<i class=\"nokta\"></i>Bu cihaz H.265 yayınları donanımla çözemiyor.'")
 kopru = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "kopru_ios.js"), encoding="utf-8").read()
