@@ -833,7 +833,7 @@ const HEVC_MSE=!!(window.MediaSource&&MediaSource.isTypeSupported('video/mp4; co
 function kodekAdi(c){c=String(c||"").toLowerCase();return/^(hvc1|hev1)/.test(c)?"H.265":/^(avc1|avc3)/.test(c)?"H.264":/^av01/.test(c)?"AV1":/^(vp09|vp9)/.test(c)?"VP9":""}
 function baslat(o,tur){if(o!==oturum)return;
   temizle();o.tur=tur;o.bitti=false;o.denenen.add(tur);o.kodek="";const u=vekil(o.k);
-  const iosHls=window.IOS&&((tur==="hls"&&!o.iosHlsjs)||(tur==="ts"&&!o.iosTsDene&&xtreamHls(o.k.url)));if(iosHls){o.iosKaynak=tur;o.tur="hls";o.iosYerli=1;video.src=tur==="hls"?o.k.url:xtreamHls(o.k.url)}else if(tur==="hls"){
+  const iosAdr=window.IOS&&!o.iosYedek&&(tur==="hls"||tur==="ts")?(xtreamHls(o.k.url)||(tur==="hls"?o.k.url:"")):"";if(iosAdr){o.iosYerli=1;video.src=iosAdr}else if(tur==="hls"){
     if(!window.Hls||!Hls.isSupported()){video.src=o.k.url;tamponla(o,Math.min(tamponHedef,3));return}
     let kurtarma=0;
     hls=new Hls({enableWorker:true,lowLatencyMode:false,maxBufferLength:30,maxMaxBufferLength:60,backBufferLength:30,liveSyncDurationCount:3,
@@ -857,7 +857,7 @@ function baslat(o,tur){if(o!==oturum)return;
       basarisiz(o,kodek?KODEK:kod?sunucuHatasi({durum:kod}):"Akış okunamadı ("+detay+").",kodek,!!kod)});
     ts.attachMediaElement(video);ts.load()}
   else video.src=o.k.url;
-  tamponla(o,Math.min(tamponHedef,3))}
+  tamponla(o,o.iosYerli?.4:Math.min(tamponHedef,3))}
 function ileriTampon(){const b=video.buffered,t=video.currentTime;for(let i=0;i<b.length;i++)if(b.start(i)<=t+.3&&b.end(i)>t)return b.end(i)-t;return 0}
 function tamponla(o,saniye){clearInterval(tamponZaman);o.tamponda=true;const bas=Date.now();
   tamponZaman=setInterval(()=>{if(o!==oturum){clearInterval(tamponZaman);return}
@@ -898,7 +898,7 @@ video.addEventListener("resize",()=>{goruntuVarsa();bilgiGuncelle();rtxDurumCiz(
 video.addEventListener("timeupdate",goruntuVarsa);
 video.addEventListener("pause",()=>{$("radyo").classList.add("durdu");oynatIkon();kontrolGoster()});
 video.addEventListener("play",()=>{$("radyo").classList.remove("durdu");oynatIkon();if(keskinMiktar&&!cizimVar){cizimVar=true;kareCiz()}});
-video.addEventListener("error",()=>{const o=oturum;if(!o||!video.error||!o.tur)return;if(window.IOS&&o.iosYerli){o.iosYerli=0;if(o.iosKaynak==="ts"){o.iosTsDene=1;return baslat(o,"ts")}o.iosHlsjs=1;return baslat(o,"hls")}const kodu=video.error.code;
+video.addEventListener("error",()=>{const o=oturum;if(!o||!video.error||!o.tur)return;if(window.IOS&&o.iosYerli){o.iosYerli=0;o.iosYedek=1;return baslat(o,o.tur)}const kodu=video.error.code;
   if(o.tur==="dogal")basarisiz(o,kodu===4?"Bu yayının biçimi desteklenmiyor.":"Yayın okunurken hata oluştu.",false);
   else if(kodu===3)basarisiz(o,KODEK,true)});
 video.addEventListener("volumechange",sesIkon);
