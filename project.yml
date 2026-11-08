@@ -17,8 +17,8 @@ targets:
       path: Kaynak/Info.plist
       properties:
         CFBundleDisplayName: GammaTV
-        CFBundleShortVersionString: "1.2.0"
-        CFBundleVersion: "8"
+        CFBundleShortVersionString: "1.3.0"
+        CFBundleVersion: "9"
         LSRequiresIPhoneOS: true
         UILaunchScreen: {}
         UIRequiresFullScreen: true
