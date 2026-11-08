@@ -37,6 +37,9 @@ final class AnaEkran: UIViewController, WKScriptMessageHandlerWithReply, WKNavig
         w.scrollView.backgroundColor = .clear
         w.scrollView.contentInsetAdjustmentBehavior = .never
         w.scrollView.bounces = false
+        w.scrollView.minimumZoomScale = 1
+        w.scrollView.maximumZoomScale = 1
+        w.scrollView.bouncesZoom = false
         w.navigationDelegate = self
         w.uiDelegate = self
         if #available(iOS 16.4, *) { w.isInspectable = true }
@@ -61,9 +64,16 @@ final class AnaEkran: UIViewController, WKScriptMessageHandlerWithReply, WKNavig
             w.leadingAnchor.constraint(equalTo: g.leadingAnchor),
             w.trailingAnchor.constraint(equalTo: g.trailingAnchor),
         ])
+        // klavye kapaninca iOS sayfayi yukari kaydirilmis birakir: geri sifirlanir
+        NotificationCenter.default.addObserver(self, selector: #selector(klavyeKapandi),
+                                               name: UIResponder.keyboardDidHideNotification, object: nil)
         if let adres = URL(string: "gammatv://app/index.html") {
             w.load(URLRequest(url: adres))
         }
+    }
+
+    @objc private func klavyeKapandi() {
+        web.scrollView.setContentOffset(.zero, animated: true)
     }
 
     // MARK: sayfadan gelen istekler (window.webkit.messageHandlers.gamma.postMessage)
@@ -131,6 +141,13 @@ final class AnaEkran: UIViewController, WKScriptMessageHandlerWithReply, WKNavig
                  for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if let u = navigationAction.request.url { UIApplication.shared.open(u) }
         return nil
+    }
+
+    /// Uygulama gibi davranir: iki parmakla ya da cift dokunusla yakinlastirma yok
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        webView.scrollView.pinchGestureRecognizer?.isEnabled = false
+        webView.scrollView.minimumZoomScale = 1
+        webView.scrollView.maximumZoomScale = 1
     }
 
     /// Arayuz sureci (bellek yetersizligi gibi nedenlerle) kapanirsa sayfa yeniden yuklenir
