@@ -9,6 +9,9 @@ final class AnaEkran: UIViewController, WKScriptMessageHandlerWithReply, WKNavig
     private let aktarici = Aktarici()
     private var acikCubuk = false
     private var tamEkran = false
+    /// Normalde arayuz guvenli alanin icinde; tam ekranda video centik ve ev cubugu dahil tum ekrani kullanir
+    private var guvenliKisitlar: [NSLayoutConstraint] = []
+    private var tamKisitlar: [NSLayoutConstraint] = []
 
     override var preferredStatusBarStyle: UIStatusBarStyle { acikCubuk ? .darkContent : .lightContent }
     override var prefersStatusBarHidden: Bool { tamEkran }
@@ -59,11 +62,20 @@ final class AnaEkran: UIViewController, WKScriptMessageHandlerWithReply, WKNavig
             altAlan.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             altAlan.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             altAlan.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+        guvenliKisitlar = [
             w.topAnchor.constraint(equalTo: g.topAnchor),
             w.bottomAnchor.constraint(equalTo: g.bottomAnchor),
             w.leadingAnchor.constraint(equalTo: g.leadingAnchor),
             w.trailingAnchor.constraint(equalTo: g.trailingAnchor),
-        ])
+        ]
+        tamKisitlar = [
+            w.topAnchor.constraint(equalTo: view.topAnchor),
+            w.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            w.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            w.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ]
+        NSLayoutConstraint.activate(guvenliKisitlar)
         // klavye kapaninca iOS sayfayi yukari kaydirilmis birakir: geri sifirlanir
         NotificationCenter.default.addObserver(self, selector: #selector(klavyeKapandi),
                                                name: UIResponder.keyboardDidHideNotification, object: nil)
@@ -103,6 +115,12 @@ final class AnaEkran: UIViewController, WKScriptMessageHandlerWithReply, WKNavig
                 ustAlan.backgroundColor = .black
                 altAlan.backgroundColor = .black
                 view.backgroundColor = .black
+            }
+            // tam ekranda alttaki siyah bant (ev cubugu alani) ve yanlardaki centik payi kalkar
+            NSLayoutConstraint.deactivate(tamEkran ? guvenliKisitlar : tamKisitlar)
+            NSLayoutConstraint.activate(tamEkran ? tamKisitlar : guvenliKisitlar)
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut, .beginFromCurrentState]) {
+                self.view.layoutIfNeeded()
             }
             setNeedsStatusBarAppearanceUpdate()
             setNeedsUpdateOfHomeIndicatorAutoHidden()
