@@ -16,12 +16,14 @@ d('else video.src=u;', 'else video.src=o.k.url;')
 # iPhone: canli yayinlar once iPhone'un kendi HLS oynaticisiyla acilir (Xtream .ts adresinin .m3u8 karsiligi);
 # acilmazsa eski yola (MPEG-TS / hls.js) donulur
 d('if(tur==="hls"){',
-  'const iosHls=window.IOS&&((tur==="hls"&&!o.iosHlsjs)||(tur==="ts"&&!o.iosTsDene&&xtreamHls(o.k.url)));'
-  'if(iosHls){o.iosKaynak=tur;o.tur="hls";o.iosYerli=1;video.src=tur==="hls"?o.k.url:xtreamHls(o.k.url)}'
+  'const iosAdr=window.IOS&&!o.iosYedek&&(tur==="hls"||tur==="ts")?(xtreamHls(o.k.url)||(tur==="hls"?o.k.url:"")):"";'
+  'if(iosAdr){o.iosYerli=1;video.src=iosAdr}'
   'else if(tur==="hls"){')
 d('video.addEventListener("error",()=>{const o=oturum;if(!o||!video.error||!o.tur)return;',
   'video.addEventListener("error",()=>{const o=oturum;if(!o||!video.error||!o.tur)return;'
-  'if(window.IOS&&o.iosYerli){o.iosYerli=0;if(o.iosKaynak==="ts"){o.iosTsDene=1;return baslat(o,"ts")}o.iosHlsjs=1;return baslat(o,"hls")}')
+  'if(window.IOS&&o.iosYerli){o.iosYerli=0;o.iosYedek=1;return baslat(o,o.tur)}')
+d('else video.src=o.k.url;\n  tamponla(o,Math.min(tamponHedef,3))',
+  'else video.src=o.k.url;\n  tamponla(o,o.iosYerli?.4:Math.min(tamponHedef,3))')   # iPhone oynaticisi kendi tamponlar: hemen baslat
 d('content="width=device-width, initial-scale=1, viewport-fit=cover"',
   'content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"')   # iki parmakla yakinlastirma kapali                         # dosya/radyo: iPhone oynaticisi dogrudan acar
 d("'<i class=\"nokta\"></i>Bu bilgisayarda kapalı. Microsoft Store\\'dan ücretsiz “HEVC Video Extensions from Device Manufacturer” uzantısını kurup uygulamayı yeniden başlat.'",
