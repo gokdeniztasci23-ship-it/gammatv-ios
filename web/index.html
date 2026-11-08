@@ -4,6 +4,9 @@
    Sayfa gammatv://app adresinden yuklenir; /bilgi, /p ve /onbellek (okuma) istekleri uygulamanin aktaricisina gider.
    Kayit, onbellege yazma, tam ekran ve sistem cubugu renkleri window.webkit.messageHandlers.gamma ile yapilir. */
 window.IOS=true;
+/* Xtream canli yayin adresi (.../kullanici/sifre/123 ya da .ts) -> iPhone'un kendi oynaticisinin actigi .m3u8 karsiligi */
+window.xtreamHls=u=>{const m=String(u||"").match(/^(https?:\/\/[^\/?#]+)\/(?:live\/)?([^\/?#]+)\/([^\/?#]+)\/(\d+)(?:\.ts)?(?:\?.*)?$/i);
+  return m?m[1]+"/live/"+m[2]+"/"+m[3]+"/"+m[4]+".m3u8":""};
 (function(){
   const M=window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.gamma;if(!M)return;
   const ist=(k,a)=>M.postMessage(Object.assign({k},a||{}));
@@ -830,7 +833,7 @@ const HEVC_MSE=!!(window.MediaSource&&MediaSource.isTypeSupported('video/mp4; co
 function kodekAdi(c){c=String(c||"").toLowerCase();return/^(hvc1|hev1)/.test(c)?"H.265":/^(avc1|avc3)/.test(c)?"H.264":/^av01/.test(c)?"AV1":/^(vp09|vp9)/.test(c)?"VP9":""}
 function baslat(o,tur){if(o!==oturum)return;
   temizle();o.tur=tur;o.bitti=false;o.denenen.add(tur);o.kodek="";const u=vekil(o.k);
-  if(tur==="hls"){
+  const iosHls=window.IOS&&((tur==="hls"&&!o.iosHlsjs)||(tur==="ts"&&!o.iosTsDene&&xtreamHls(o.k.url)));if(iosHls){o.iosKaynak=tur;o.tur="hls";o.iosYerli=1;video.src=tur==="hls"?o.k.url:xtreamHls(o.k.url)}else if(tur==="hls"){
     if(!window.Hls||!Hls.isSupported()){video.src=o.k.url;tamponla(o,Math.min(tamponHedef,3));return}
     let kurtarma=0;
     hls=new Hls({enableWorker:true,lowLatencyMode:false,maxBufferLength:30,maxMaxBufferLength:60,backBufferLength:30,liveSyncDurationCount:3,
@@ -892,7 +895,7 @@ video.addEventListener("loadedmetadata",()=>{const o=oturum;if(!o)return;const s
 video.addEventListener("resize",()=>{bilgiGuncelle();rtxDurumCiz()});
 video.addEventListener("pause",()=>{$("radyo").classList.add("durdu");oynatIkon();kontrolGoster()});
 video.addEventListener("play",()=>{$("radyo").classList.remove("durdu");oynatIkon();if(keskinMiktar&&!cizimVar){cizimVar=true;kareCiz()}});
-video.addEventListener("error",()=>{const o=oturum;if(!o||!video.error||!o.tur)return;const kodu=video.error.code;
+video.addEventListener("error",()=>{const o=oturum;if(!o||!video.error||!o.tur)return;if(window.IOS&&o.iosYerli){o.iosYerli=0;if(o.iosKaynak==="ts"){o.iosTsDene=1;return baslat(o,"ts")}o.iosHlsjs=1;return baslat(o,"hls")}const kodu=video.error.code;
   if(o.tur==="dogal")basarisiz(o,kodu===4?"Bu yayının biçimi desteklenmiyor.":"Yayın okunurken hata oluştu.",false);
   else if(kodu===3)basarisiz(o,KODEK,true)});
 video.addEventListener("volumechange",sesIkon);
