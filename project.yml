@@ -18,7 +18,7 @@ targets:
       properties:
         CFBundleDisplayName: GammaTV
         CFBundleShortVersionString: "1.2.0"
-        CFBundleVersion: "7"
+        CFBundleVersion: "8"
         LSRequiresIPhoneOS: true
         UILaunchScreen: {}
         UIRequiresFullScreen: true
@@ -34,15 +34,13 @@ targets:
           - UIInterfaceOrientationLandscapeRight
         NSAppTransportSecurity:
           NSAllowsArbitraryLoads: true
-          NSAllowsArbitraryLoadsForMedia: true
-          NSAllowsArbitraryLoadsInWebContent: true
         ITSAppUsesNonExemptEncryption: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.gammatv.app
         PRODUCT_NAME: GammaTV
         MARKETING_VERSION: "1.2.0"
-        CURRENT_PROJECT_VERSION: "7"
+        CURRENT_PROJECT_VERSION: "8"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "1,2"
         SWIFT_VERSION: "5.0"
