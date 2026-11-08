@@ -892,7 +892,10 @@ video.addEventListener("waiting",()=>{const o=oturum;if(!o||!$("hataEkran").hidd
 video.addEventListener("timeupdate",()=>{if(oturum)oturum.sonIlerleme=Date.now();zamanGuncelle()});
 video.addEventListener("loadedmetadata",()=>{const o=oturum;if(!o)return;const ses=!video.videoWidth;$("radyo").hidden=!ses;
   if(ses){$("radyoAd").textContent=o.k.ad;$("radyoLogo").innerHTML=logoHtml(o.k)}bilgiGuncelle();rtxDurumCiz();zamanGuncelle()});
-video.addEventListener("resize",()=>{bilgiGuncelle();rtxDurumCiz()});
+/* goruntu boyutu bazi oynaticilarda (iPhone) meta veriden sonra gelir: goruntu belirince "Yalnizca ses" ekrani kalkar */
+function goruntuVarsa(){if(video.videoWidth>0&&!$("radyo").hidden)$("radyo").hidden=true}
+video.addEventListener("resize",()=>{goruntuVarsa();bilgiGuncelle();rtxDurumCiz()});
+video.addEventListener("timeupdate",goruntuVarsa);
 video.addEventListener("pause",()=>{$("radyo").classList.add("durdu");oynatIkon();kontrolGoster()});
 video.addEventListener("play",()=>{$("radyo").classList.remove("durdu");oynatIkon();if(keskinMiktar&&!cizimVar){cizimVar=true;kareCiz()}});
 video.addEventListener("error",()=>{const o=oturum;if(!o||!video.error||!o.tur)return;if(window.IOS&&o.iosYerli){o.iosYerli=0;if(o.iosKaynak==="ts"){o.iosTsDene=1;return baslat(o,"ts")}o.iosHlsjs=1;return baslat(o,"hls")}const kodu=video.error.code;
