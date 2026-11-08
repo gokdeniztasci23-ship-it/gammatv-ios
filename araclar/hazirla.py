@@ -13,6 +13,15 @@ d('{enableWorker:true,enableStashBuffer:false', '{enableWorker:false,enableStash
 d('if(!window.Hls||!Hls.isSupported())return basarisiz(o,"HLS oynatıcı yüklenemedi.",false);',
   'if(!window.Hls||!Hls.isSupported()){video.src=o.k.url;tamponla(o,Math.min(tamponHedef,3));return}')   # iOS 17.1 oncesi: yerlesik HLS
 d('else video.src=u;', 'else video.src=o.k.url;')
+# iPhone: canli yayinlar once iPhone'un kendi HLS oynaticisiyla acilir (Xtream .ts adresinin .m3u8 karsiligi);
+# acilmazsa eski yola (MPEG-TS / hls.js) donulur
+d('if(tur==="hls"){',
+  'const iosHls=window.IOS&&((tur==="hls"&&!o.iosHlsjs)||(tur==="ts"&&!o.iosTsDene&&xtreamHls(o.k.url)));'
+  'if(iosHls){o.iosKaynak=tur;o.tur="hls";o.iosYerli=1;video.src=tur==="hls"?o.k.url:xtreamHls(o.k.url)}'
+  'else if(tur==="hls"){')
+d('video.addEventListener("error",()=>{const o=oturum;if(!o||!video.error||!o.tur)return;',
+  'video.addEventListener("error",()=>{const o=oturum;if(!o||!video.error||!o.tur)return;'
+  'if(window.IOS&&o.iosYerli){o.iosYerli=0;if(o.iosKaynak==="ts"){o.iosTsDene=1;return baslat(o,"ts")}o.iosHlsjs=1;return baslat(o,"hls")}')
 d('content="width=device-width, initial-scale=1, viewport-fit=cover"',
   'content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"')   # iki parmakla yakinlastirma kapali                         # dosya/radyo: iPhone oynaticisi dogrudan acar
 d("'<i class=\"nokta\"></i>Bu bilgisayarda kapalı. Microsoft Store\\'dan ücretsiz “HEVC Video Extensions from Device Manufacturer” uzantısını kurup uygulamayı yeniden başlat.'",

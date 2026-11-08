@@ -2,6 +2,9 @@
    Sayfa gammatv://app adresinden yuklenir; /bilgi, /p ve /onbellek (okuma) istekleri uygulamanin aktaricisina gider.
    Kayit, onbellege yazma, tam ekran ve sistem cubugu renkleri window.webkit.messageHandlers.gamma ile yapilir. */
 window.IOS=true;
+/* Xtream canli yayin adresi (.../kullanici/sifre/123 ya da .ts) -> iPhone'un kendi oynaticisinin actigi .m3u8 karsiligi */
+window.xtreamHls=u=>{const m=String(u||"").match(/^(https?:\/\/[^\/?#]+)\/(?:live\/)?([^\/?#]+)\/([^\/?#]+)\/(\d+)(?:\.ts)?(?:\?.*)?$/i);
+  return m?m[1]+"/live/"+m[2]+"/"+m[3]+"/"+m[4]+".m3u8":""};
 (function(){
   const M=window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.gamma;if(!M)return;
   const ist=(k,a)=>M.postMessage(Object.assign({k},a||{}));
