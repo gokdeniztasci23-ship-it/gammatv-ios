@@ -1,0 +1,53 @@
+# Xcode projesi bu dosyadan uretilir (XcodeGen): xcodegen generate
+name: GammaTV
+options:
+  bundleIdPrefix: com.gammatv
+  deploymentTarget:
+    iOS: "15.0"
+targets:
+  GammaTV:
+    type: application
+    platform: iOS
+    sources:
+      - path: Kaynak
+      - path: web
+        type: folder
+        buildPhase: resources
+    info:
+      path: Kaynak/Info.plist
+      properties:
+        CFBundleDisplayName: GammaTV
+        CFBundleShortVersionString: "1.2.0"
+        CFBundleVersion: "7"
+        LSRequiresIPhoneOS: true
+        UILaunchScreen: {}
+        UIRequiresFullScreen: true
+        UIViewControllerBasedStatusBarAppearance: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+          NSAllowsArbitraryLoadsForMedia: true
+          NSAllowsArbitraryLoadsInWebContent: true
+        ITSAppUsesNonExemptEncryption: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.gammatv.app
+        PRODUCT_NAME: GammaTV
+        MARKETING_VERSION: "1.2.0"
+        CURRENT_PROJECT_VERSION: "7"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SWIFT_VERSION: "5.0"
+        SWIFT_STRICT_CONCURRENCY: minimal
+        CODE_SIGNING_ALLOWED: "NO"
+        CODE_SIGNING_REQUIRED: "NO"
+        CODE_SIGN_IDENTITY: ""
+        ENABLE_BITCODE: "NO"
