@@ -1,0 +1,33 @@
+# GitHub'in Mac sunucusunda imzasiz GammaTV.ipa uretir; dosya "Artifacts" bolumunden indirilir
+# ve Sideloadly ile kendi Apple kimliginle imzalanip iPhone'a kurulur.
+name: iPhone IPA
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+jobs:
+  derle:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: XcodeGen kur
+        run: brew install xcodegen
+      - name: Xcode projesini olustur
+        run: xcodegen generate
+      - name: Derle (imzasiz)
+        run: |
+          xcodebuild -project GammaTV.xcodeproj -target GammaTV -configuration Release \
+            -sdk iphoneos ARCHS=arm64 ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+      - name: IPA paketle
+        run: |
+          rm -rf Payload GammaTV.ipa
+          mkdir Payload
+          cp -R build/Release-iphoneos/GammaTV.app Payload/
+          zip -qry GammaTV.ipa Payload
+          ls -la GammaTV.ipa
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GammaTV-ipa
+          path: GammaTV.ipa
+          retention-days: 30
